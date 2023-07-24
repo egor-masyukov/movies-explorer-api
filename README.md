@@ -18,3 +18,5 @@
 
 ## Ссылка на проект
 https://github.com/egor-masyukov/movies-explorer-api
+
+https://api.egor.nomoredomains.xyz/

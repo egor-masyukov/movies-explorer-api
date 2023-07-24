@@ -10,10 +10,7 @@ const errorHandler = require('./middlewares/errorHandler');
 
 const app = express();
 app.use(
-  cors({
-    origin: 'https://egmas.nomoredomains.work',
-    credentials: true,
-  }),
+  cors(),
 );
 
 mongoose.connect('mongodb://127.0.0.1:27017/bitfilmsdb', {
@@ -36,7 +33,7 @@ app.use(errorLogger);
 app.use(errors());
 app.use(errorHandler);
 
-app.listen(3000, () => {
+app.listen(3002, () => {
   // eslint-disable-next-line no-console
-  console.log('Слушаю порт 3000');
+  console.log('Слушаю порт 3002');
 });
