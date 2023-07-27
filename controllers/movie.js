@@ -4,7 +4,8 @@ const NotFoundError = require('../errors/NotFoundError');
 const ForbiddenError = require('../errors/ForbiddenError');
 
 const getMovies = (req, res, next) => {
-  Movie.find({})
+  const owner = req.user._id;
+  Movie.find({ owner })
     .then((movie) => res.status(200).send(movie))
     .catch(next);
 };
@@ -45,11 +46,10 @@ const deleteMovie = (req, res, next) => {
     .orFail(() => new Error('Not found'))
     .then((movie) => {
       if (movie.owner.valueOf() !== _id) {
-        next(new ForbiddenError('Запрещено удалять чужой фильм'));
-      } else {
-        Movie.findByIdAndRemove(movieId)
-          .then((deleted) => res.status(200).send(deleted));
+        return next(new ForbiddenError('Запрещено удалять чужой фильм'));
       }
+      return Movie.findByIdAndRemove(movieId)
+        .then((deleted) => res.status(200).send(deleted));
     })
     .catch((err) => {
       if (err.name === 'CastError') {

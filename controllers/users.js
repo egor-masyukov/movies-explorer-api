@@ -98,6 +98,8 @@ const updateUser = (req, res, next) => {
         next(new BadRequestError('Переданы некорректные данные при обновлении профиля'));
       } else if (err.name === 'CastError') {
         next(new BadRequestError('Некорректный id пользователя'));
+      } else if (err.code === 11000) {
+        next(new ConflictError('Пользователь с таким email уже существует'));
       } else if (err.message === 'Not found') {
         next(new NotFoundError('Пользователь по указанному id не найден'));
       } else {
